@@ -1,0 +1,50 @@
+version: "3.6"
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    ports:
+      - "9022:22"
+    volumes:
+      - ${GITLAB_DATA_PATH}:/var/opt/gitlab
+      - ${GITLAB_LOGS_PATH}:/var/log/gitlab
+      - ${GITLAB_CONFIG_PATH}:/etc/gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+      DOMAINS: ${DOMAINS}
+    configs:
+      - source: gitlab
+        target: /omnibus_config.rb
+    secrets:
+      - gitlab_root_password
+    networks:
+      - gitlab
+      - default
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    networks:
+      - gitlab
+      - default
+    deploy:
+      mode: replicated
+      replicas: 2
+      
+configs:
+  gitlab:
+    file: ./gitlab.rb
+secrets:
+  gitlab_root_password:
+    file: ./.env-secret-password
+
+networks:
+  default:
+    external:
+      name: ${NETWORK}
+  gitlab:
+    driver: overlay
+    attachable: true

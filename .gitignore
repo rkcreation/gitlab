@@ -1,0 +1,13 @@
+!data
+data/*
+!data/config
+data/config/*
+!data/logs
+data/logs/*
+!data/repos
+data/repos/*
+
+.env
+.env*
+!.env.dist
+!.env*.dist
