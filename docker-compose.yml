@@ -3,14 +3,34 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:latest
     ports:
-      - "9022:22"
+      - "${GITLAB_SSH_PORT:-9022}:22"
     volumes:
       - ${GITLAB_DATA_PATH}:/var/opt/gitlab
       - ${GITLAB_LOGS_PATH}:/var/log/gitlab
       - ${GITLAB_CONFIG_PATH}:/etc/gitlab
+      - backup-storage:${GITLAB_BAKUPS:-/backups}
     environment:
       GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
-      DOMAINS: ${DOMAINS}
+      VIRTUAL_HOST: ${DOMAIN},${DOMAIN_REGISTRY},${DOMAIN_PAGES},${DOMAIN_MATTERMOST}
+      LETSENCRYPT_HOST: ${DOMAIN},${DOMAIN_REGISTRY},${DOMAIN_PAGES},${DOMAIN_MATTERMOST}
+      LETSENCRYPT_MAIL: ${LE_MAIL}
+      GITLAB_SSH_PORT: ${GITLAB_SSH_PORT:-9022}
+      DOMAIN: ${DOMAIN}
+      DOMAIN_REGISTRY: ${DOMAIN_REGISTRY}
+      DOMAIN_PAGES: ${DOMAIN_PAGES}
+      DOMAIN_MATTERMOST: ${DOMAIN_MATTERMOST}
+      SMTP_ADDRESS: ${SMTP_ADDRESS}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER_NAME: ${SMTP_USER_NAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_DOMAIN: ${SMTP_DOMAIN}
+      SMTP_AUTHENTICATION: ${SMTP_AUTHENTICATION}
+      SMTP_ENABLE_STARTTLS_AUTO: ${SMTP_ENABLE_STARTTLS_AUTO}
+      SMTP_TLS: ${SMTP_TLS}
+      SMTP_OPENSSL_VERIFY_MODE: ${SMTP_OPENSSL_VERIFY_MODE}
+      GITLAB_EMAIL: ${GITLAB_EMAIL}
+      GITLAB_EMAIL_REPLY_TO: ${GITLAB_EMAIL_REPLY_TO}
+      GITLAB_BAKUPS: ${GITLAB_BAKUPS:-/backups}
     configs:
       - source: gitlab
         target: /omnibus_config.rb
@@ -33,7 +53,7 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-      
+
 configs:
   gitlab:
     file: ./gitlab.rb
@@ -48,3 +68,7 @@ networks:
   gitlab:
     driver: overlay
     attachable: true
+
+volumes:
+  backup-storage:
+    external: true
