@@ -47,6 +47,9 @@ services:
 
   gitlab-runner:
     image: gitlab/gitlab-runner:alpine
+    volumes:
+      - gitlab-runner-config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - gitlab
       - default
@@ -69,6 +72,7 @@ networks:
     driver: overlay
     attachable: true
 
-# volumes:
+volumes:
+  gitlab-runner-config:
 #   backup-storage:
 #     external: true
