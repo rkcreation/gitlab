@@ -46,9 +46,12 @@ services:
         constraints: [node.role == manager]
 
   gitlab-runner:
-    image: gitlab/gitlab-runner:alpine
+    image: nohaapav/docker-gitlab-runner:latest
+    environment:
+      - GITLAB_HOST=${DOMAIN}
+      - GITLAB_IP=${GITLAB_IP}
+      - GITLAB_RUNNER_TOKEN=${GITLAB_RUNNER_TOKEN}
     volumes:
-      - gitlab-runner-config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - gitlab
@@ -72,7 +75,6 @@ networks:
     driver: overlay
     attachable: true
 
-volumes:
-  gitlab-runner-config:
+# volumes:
 #   backup-storage:
 #     external: true
