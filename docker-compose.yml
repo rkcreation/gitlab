@@ -46,7 +46,7 @@ services:
         constraints: [node.role == manager]
 
   gitlab-runner:
-    image: nohaapav/docker-gitlab-runner:latest
+    image: rkcreation/gitlab-runner:latest
     environment:
       - GITLAB_HOST=${DOMAIN}
       - GITLAB_IP=${GITLAB_IP}
@@ -55,7 +55,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - gitlab
-      - default
     deploy:
       mode: replicated
       replicas: 2
