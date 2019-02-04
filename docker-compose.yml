@@ -31,7 +31,7 @@ services:
       GITLAB_EMAIL_REPLY_TO: ${GITLAB_EMAIL_REPLY_TO}
       GITLAB_BAKUPS: ${GITLAB_BAKUPS:-/backups}
     configs:
-      - source: gitlab
+      - source: gitlab-v2
         target: /omnibus_config.rb
     secrets:
       - gitlab_root_password
@@ -60,7 +60,7 @@ services:
       replicas: 2
 
 configs:
-  gitlab:
+  gitlab-v2:
     file: ./gitlab.rb
 secrets:
   gitlab_root_password:
