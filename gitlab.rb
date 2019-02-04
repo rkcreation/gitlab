@@ -3,7 +3,7 @@ registry_external_url "https://" + ( ENV.has_key?('DOMAIN_REGISTRY') ? ENV['DOMA
 pages_external_url "https://" + ( ENV.has_key?('DOMAIN_PAGES') ? ENV['DOMAIN_PAGES'] : ( 'pages.' + ENV['DOMAIN'] ) )
 mattermost_external_url "https://" + ( ENV.has_key?('DOMAIN_MATTERMOST') ? ENV['DOMAIN_MATTERMOST'] : ( 'mattermost.' + ENV['DOMAIN'] ) )
 
-gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password')
+gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password').strip
 gitlab_rails['lfs_enabled'] = true
 gitlab_rails['gitlab_shell_ssh_port'] = ENV['GITLAB_SSH_PORT'] || 9022
 
@@ -26,7 +26,7 @@ gitlab_rails['smtp_enable'] = true
 gitlab_rails['smtp_address'] = ENV['SMTP_ADDRESS']
 gitlab_rails['smtp_port'] = ENV['SMTP_PORT']
 gitlab_rails['smtp_user_name'] = ENV['SMTP_USER_NAME']
-gitlab_rails['smtp_password'] = File.read('/run/secrets/gitlab_smtp_password')
+gitlab_rails['smtp_password'] = File.read('/run/secrets/gitlab_smtp_password').strip
 gitlab_rails['smtp_domain'] = ENV['SMTP_DOMAIN']
 gitlab_rails['smtp_authentication'] = ENV['SMTP_AUTHENTICATION']
 gitlab_rails['smtp_enable_starttls_auto'] = ENV['SMTP_ENABLE_STARTTLS_AUTO']
