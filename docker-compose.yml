@@ -22,7 +22,6 @@ services:
       SMTP_ADDRESS: ${SMTP_ADDRESS}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_USER_NAME: ${SMTP_USER_NAME}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_DOMAIN: ${SMTP_DOMAIN}
       SMTP_AUTHENTICATION: ${SMTP_AUTHENTICATION}
       SMTP_ENABLE_STARTTLS_AUTO: ${SMTP_ENABLE_STARTTLS_AUTO}
@@ -36,6 +35,7 @@ services:
         target: /omnibus_config.rb
     secrets:
       - gitlab_root_password
+      - gitlab_smtp_password
     networks:
       - gitlab
       - default
@@ -65,6 +65,8 @@ configs:
 secrets:
   gitlab_root_password:
     file: ./.env-secret-password
+  gitlab_smtp_password:
+    file: ./.env-smtp-password
 
 networks:
   default:
