@@ -2,6 +2,7 @@ version: "3.6"
 services:
   gitlab:
     image: gitlab/gitlab-ce:latest
+    hostname: ${DOMAIN}
     ports:
       - "${GITLAB_SSH_PORT:-9022}:22"
     volumes:
@@ -11,14 +12,10 @@ services:
       # - backup-storage:${GITLAB_BAKUPS:-/backups}
     environment:
       GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
-      VIRTUAL_HOST: ${DOMAIN},${DOMAIN_REGISTRY},${DOMAIN_PAGES},${DOMAIN_MATTERMOST}
-      LETSENCRYPT_HOST: ${DOMAIN},${DOMAIN_REGISTRY},${DOMAIN_PAGES},${DOMAIN_MATTERMOST}
-      LETSENCRYPT_MAIL: ${LE_MAIL}
       GITLAB_SSH_PORT: ${GITLAB_SSH_PORT:-9022}
       DOMAIN: ${DOMAIN}
       DOMAIN_REGISTRY: ${DOMAIN_REGISTRY}
       DOMAIN_PAGES: ${DOMAIN_PAGES}
-      DOMAIN_MATTERMOST: ${DOMAIN_MATTERMOST}
       SMTP_ADDRESS: ${SMTP_ADDRESS}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_USER_NAME: ${SMTP_USER_NAME}
@@ -31,7 +28,7 @@ services:
       GITLAB_EMAIL_REPLY_TO: ${GITLAB_EMAIL_REPLY_TO}
       GITLAB_BAKUPS: ${GITLAB_BAKUPS:-/backups}
     configs:
-      - source: gitlab-v2
+      - source: gitlab-rb
         target: /omnibus_config.rb
     secrets:
       - gitlab_root_password
@@ -43,7 +40,20 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.role == manager]
+        constraints:
+          - node.labels.management.gitlab == true
+          - node.role == manager
+    labels:
+      - traefik.enable=true
+      # Host settings for GitLab itself
+      - traefik.gitlab.frontend.rule=Host:${DOMAIN?Variable DOMAIN not set}
+      - traefik.gitlab.port=80
+      # Host settings for the registry
+      - traefik.registry.frontend.rule=Host:${DOMAIN_REGISTRY?Variable DOMAIN_REGISTRY not set}
+      - traefik.registry.port=5100
+      # Host settings for GitLab pages. Since I don't have a wildcard certificate, I list every domain on it's own here
+      - traefik.pages.frontend.rule=Host:${DOMAIN_PAGES?Variable DOMAIN_PAGES not set},nicolas.${DOMAIN_PAGES?Variable DOMAIN_PAGES not set}
+      - traefik.pages.port=5201
 
   gitlab-runner:
     image: rkcreation/gitlab-runner:latest
@@ -60,13 +70,11 @@ services:
       replicas: 2
 
 configs:
-  gitlab-v2:
+  gitlab-rb:
     file: ./gitlab.rb
 secrets:
   gitlab_root_password:
-    file: ./.env-secret-password
   gitlab_smtp_password:
-    file: ./.env-smtp-password
 
 networks:
   default:
