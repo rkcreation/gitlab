@@ -39,6 +39,3 @@ gitlab_rails['gitlab_email_reply_to'] = ENV['GITLAB_EMAIL_REPLY_TO'] || ENV['GIT
 gitlab_rails['backup_path'] = ( ENV['GITLAB_BAKUPS'] || '/backups' ) + '/gitlab'
 
 gitlab_rails['backup_keep_time'] = 604800
-
-gitlab_pages['inplace_chroot'] = true
-# gitlab_pages['external_http'] = ['gitlab:5201']
