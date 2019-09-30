@@ -2,7 +2,6 @@ external_url "https://" + ENV['DOMAIN']
 registry_external_url "https://" + ( ENV.has_key?('DOMAIN_REGISTRY') ? ENV['DOMAIN_REGISTRY'] : ( 'registry.' + ENV['DOMAIN'] ) )
 pages_external_url "https://" + ( ENV.has_key?('DOMAIN_PAGES') ? ENV['DOMAIN_PAGES'] : ( 'pages.' + ENV['DOMAIN'] ) )
 
-print File.read('/run/secrets/gitlab_root_password').strip
 print File.read('/run/secrets/gitlab_smtp_password').strip
 
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password').strip
