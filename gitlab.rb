@@ -1,6 +1,7 @@
 external_url "https://" + ENV['DOMAIN']
 registry_external_url "https://" + ( ENV.has_key?('DOMAIN_REGISTRY') ? ENV['DOMAIN_REGISTRY'] : ( 'registry.' + ENV['DOMAIN'] ) )
 pages_external_url "https://" + ( ENV.has_key?('DOMAIN_PAGES') ? ENV['DOMAIN_PAGES'] : ( 'pages.' + ENV['DOMAIN'] ) )
+mattermost_external_url "https://" + ( ENV.has_key?('DOMAIN_MATTERMOST') ? ENV['DOMAIN_MATTERMOST'] : ( 'mattermost.' + ENV['DOMAIN'] ) )
 
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password').strip
 gitlab_rails['lfs_enabled'] = true
@@ -10,14 +11,16 @@ letsencrypt['enable'] = false
 
 nginx['listen_port'] = 80
 nginx['listen_https'] = false
-nginx['http2_enabled'] = false
-nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
-registry_nginx['listen_port'] = 5100
+nginx['proxy_set_headers'] = {  "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+registry_nginx['listen_port'] = 80
 registry_nginx['listen_https'] = false
-registry_nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
-pages_nginx['listen_port'] = 5200
+registry_nginx['proxy_set_headers'] = {  "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+pages_nginx['listen_port'] = 80
 pages_nginx['listen_https'] = false
-pages_nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+pages_nginx['proxy_set_headers'] = {  "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+mattermost_nginx['listen_port'] = 80
+mattermost_nginx['listen_https'] = false
+mattermost_nginx['proxy_set_headers'] = {  "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 
 gitlab_rails['smtp_enable'] = true
 gitlab_rails['smtp_address'] = ENV['SMTP_ADDRESS']
