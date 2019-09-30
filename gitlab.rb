@@ -37,5 +37,5 @@ gitlab_rails['backup_path'] = ( ENV['GITLAB_BAKUPS'] || '/backups' ) + '/gitlab'
 
 gitlab_rails['backup_keep_time'] = 604800
 
-gitlab_pages['inplace_chroot'] = true
-gitlab_pages['external_http'] = ['gitlab:5201']
+# gitlab_pages['inplace_chroot'] = true
+# gitlab_pages['external_http'] = ['gitlab:5201']
