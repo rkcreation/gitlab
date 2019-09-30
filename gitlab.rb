@@ -11,13 +11,13 @@ letsencrypt['enable'] = false
 nginx['listen_port'] = 80
 nginx['listen_https'] = false
 nginx['http2_enabled'] = false
-nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+nginx['proxy_set_headers'] = { "Host" => "$http_host", "X-Real-IP" => "$remote_addr", "X-Forwarded-For" => "$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 registry_nginx['listen_port'] = 5100
 registry_nginx['listen_https'] = false
-registry_nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+registry_nginx['proxy_set_headers'] = { "Host" => "$http_host", "X-Real-IP" => "$remote_addr", "X-Forwarded-For" => "$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 pages_nginx['listen_port'] = 5200
 pages_nginx['listen_https'] = false
-pages_nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+pages_nginx['proxy_set_headers'] = { "Host" => "$http_host", "X-Real-IP" => "$remote_addr", "X-Forwarded-For" => "$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 
 gitlab_rails['smtp_enable'] = true
 gitlab_rails['smtp_address'] = ENV['SMTP_ADDRESS']
