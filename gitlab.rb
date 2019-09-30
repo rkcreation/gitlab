@@ -1,14 +1,14 @@
 external_url "https://" + ENV['DOMAIN']
 registry_external_url "https://" + ( ENV.has_key?('DOMAIN_REGISTRY') ? ENV['DOMAIN_REGISTRY'] : ( 'registry.' + ENV['DOMAIN'] ) )
-pages_external_url "https://" + ( ENV.has_key?('DOMAIN_PAGES') ? ENV['DOMAIN_PAGES'] : ( 'pages.' + ENV['DOMAIN'] ) )
+# pages_external_url "https://" + ( ENV.has_key?('DOMAIN_PAGES') ? ENV['DOMAIN_PAGES'] : ( 'pages.' + ENV['DOMAIN'] ) )
 
 gitlab_rails['initial_root_password'] = File.read('/run/secrets/gitlab_root_password').strip
 gitlab_rails['lfs_enabled'] = true
 gitlab_rails['gitlab_shell_ssh_port'] = ENV.has_key?('GITLAB_SSH_PORT') ? ENV['GITLAB_SSH_PORT'] : 9022
 
 letsencrypt['enable'] = false
-pages['enable'] = false
-mattermost['enable'] = false
+# pages['enable'] = false
+# mattermost['enable'] = false
 
 nginx['listen_port'] = 80
 nginx['listen_https'] = false
