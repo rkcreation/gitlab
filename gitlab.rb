@@ -14,11 +14,9 @@ nginx['http2_enabled'] = false
 nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 registry_nginx['listen_port'] = 5100
 registry_nginx['listen_https'] = false
-registry_nginx['http2_enabled'] = false
 registry_nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 pages_nginx['listen_port'] = 5200
 pages_nginx['listen_https'] = false
-pages_nginx['http2_enabled'] = false
 pages_nginx['proxy_set_headers'] = { "Host" => "$$http_host", "X-Real-IP" => "$$remote_addr", "X-Forwarded-For" => "$$proxy_add_x_forwarded_for", "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
 
 gitlab_rails['smtp_enable'] = true
@@ -40,4 +38,4 @@ gitlab_rails['backup_path'] = ( ENV['GITLAB_BAKUPS'] || '/backups' ) + '/gitlab'
 gitlab_rails['backup_keep_time'] = 604800
 
 gitlab_pages['inplace_chroot'] = true
-gitlab_pages['external_http'] = ['gitlab:5201']
+# gitlab_pages['external_http'] = ['gitlab:5201']
