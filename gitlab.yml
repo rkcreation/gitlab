@@ -45,9 +45,14 @@ services:
           - node.role == manager
     labels:
       - traefik.enable=true
+      - traefik.tags=traefik-public
+      - traefik.docker.network=traefik-public
       # Host settings for GitLab itself
       - traefik.gitlab.frontend.rule=Host:${DOMAIN?Variable DOMAIN not set}
       - traefik.gitlab.port=80
+      - traefik.redirectorservice.gitlab.frontend.entryPoints=http
+      - traefik.redirectorservice.gitlab.frontend.redirect.entryPoint=https
+      - traefik.webservice.gitlab.frontend.entryPoints=https
       # Host settings for the registry
       - traefik.registry.frontend.rule=Host:${DOMAIN_REGISTRY?Variable DOMAIN_REGISTRY not set}
       - traefik.registry.port=5100
