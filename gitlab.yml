@@ -74,7 +74,9 @@ configs:
     file: ./gitlab.rb
 secrets:
   gitlab_root_password:
+    external: true
   gitlab_smtp_password:
+    external: true
 
 networks:
   default:
